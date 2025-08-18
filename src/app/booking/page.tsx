@@ -17,20 +17,31 @@ const BookingPage = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: Implement API call to submit form data
-    console.log('Form Data Submitted:', formData);
-    alert('예약 요청이 성공적으로 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.');
-    // Reset form after submission
-    setFormData({
+
+    const response = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        'form-name': 'booking',
+        ...formData
+      }).toString()
+    });
+
+    if (response.ok) {
+      alert('예약 요청이 성공적으로 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.');
+      setFormData({
         name: '',
         contact: '',
         date: '',
         address: '',
         serviceType: '가정용 벽걸이',
         notes: ''
-    });
+      });
+    } else {
+      alert('오류가 발생했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
@@ -46,7 +57,10 @@ const BookingPage = () => {
       {/* Booking Form */}
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-2xl mx-auto bg-gray-50 p-8 rounded-lg shadow-md">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form name="booking" method="POST" data-netlify="true" onSubmit={handleSubmit} className="space-y-6">
+            {/* Hidden input for Netlify */}
+            <input type="hidden" name="form-name" value="booking" />
+
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">고객명</label>
               <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} required className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
