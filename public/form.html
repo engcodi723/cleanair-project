@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hidden Netlify Form</title>
+  </head>
+  <body>
+    <form name="booking" netlify netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="booking" />
+      <input type="text" name="name" />
+      <input type="tel" name="contact" />
+      <input type="date" name="date" />
+      <input type="text" name="address" />
+      <select name="serviceType">
+        <option>가정용 벽걸이</option>
+      </select>
+      <textarea name="notes"></textarea>
+    </form>
+  </body>
+</html>
