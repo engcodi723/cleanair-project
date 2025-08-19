@@ -20,13 +20,15 @@ const BookingPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const response = await fetch('/', {
+    if (!formData.date) {
+      alert('서비스 희망 날짜를 선택해주세요.');
+      return;
+    }
+
+    const response = await fetch('/api/bookings', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        'form-name': 'booking',
-        ...formData
-      }).toString()
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
     });
 
     if (response.ok) {
@@ -57,9 +59,7 @@ const BookingPage = () => {
       {/* Booking Form */}
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-2xl mx-auto bg-gray-50 p-8 rounded-lg shadow-md">
-          <form name="booking" method="POST" data-netlify="true" onSubmit={handleSubmit} className="space-y-6">
-            {/* Hidden input for Netlify */}
-            <input type="hidden" name="form-name" value="booking" />
+          <form onSubmit={handleSubmit} className="space-y-6">
 
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">고객명</label>

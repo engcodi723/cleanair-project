@@ -13,9 +13,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  title     String
-  content   String?
+model Booking {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  name        String
+  contact     String
+  date        DateTime
+  address     String
+  serviceType String
+  notes       String?
 }
